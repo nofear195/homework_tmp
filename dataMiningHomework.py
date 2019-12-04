@@ -107,14 +107,14 @@ def mineTree(inTree, headerTable, minSup, preFix, freqItemList):
             mineTree(myCondTree, myHead, minSup, newFreqSet, freqItemList)
 
 # load data
-            
-loaddata = open("t2.txt","r").readlines()
 simpDat = []
-for index in loaddata:
-    initdata = index[5:].split(",")
-    tmp = list(map(int,initdata))
-    tmp2 = list(map(str,tmp))
-    simpDat += [tmp2]
+datalen = 0       
+with open("t2.txt","r") as loadata:
+    for line in loadata:
+        filtdata = line[5:-1].split(",")
+        tmp = list(map(str,filtdata))
+        simpDat += [tmp]
+        datalen += len(tmp)
 
 def createInitSet(dataSet):
     retDict = {}
@@ -125,12 +125,24 @@ def createInitSet(dataSet):
 initSet = createInitSet(simpDat)
 
 
+minsup = float(input("input min support:"))
+import math
+minsupratio = math.ceil(datalen*minsup)
+if minsupratio > 59:
+    print("out of range")
 #The FP-tree
-myFPtree, myHeaderTab = createTree(initSet,59)
+myFPtree, myHeaderTab = createTree(initSet,minsupratio)
 #myFPtree.disp()
 freqItems = []
-mineTree(myFPtree, myHeaderTab, 5, set([]), freqItems)
-print('frequent pattern',freqItems)
+mineTree(myFPtree, myHeaderTab, minsupratio, set([]), freqItems)
+myFPtree.disp()
+#print('frequent pattern',freqItems)
 
-
-
+inputset = {'1','4'}
+getresult = []
+for line in simpDat:
+    for item in line:
+        if item in inputset:
+            getresult.append(simpDat.index(line)+1)
+delduplicates = list(set(getresult))
+finalresult = sorted(delduplicates,key=getresult.index)
