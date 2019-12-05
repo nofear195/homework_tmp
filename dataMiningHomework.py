@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov 28 11:20:50 2019
+reference:
 https://blog.csdn.net/Gamer_gyt/article/details/51113753
-@author: user
 """
 # create tree node
 
@@ -107,14 +106,11 @@ def mineTree(inTree, headerTable, minSup, preFix, freqItemList):
             mineTree(myCondTree, myHead, minSup, newFreqSet, freqItemList)
 
 # load data
-simpDat = []
-datalen = 0       
+simpDat = [] 
 with open("t2.txt","r") as loadata:
     for line in loadata:
         filtdata = line[5:-1].split(",")
-        tmp = list(map(str,filtdata))
-        simpDat += [tmp]
-        datalen += len(tmp)
+        simpDat += [list(map(str,filtdata))]
 
 def createInitSet(dataSet):
     retDict = {}
@@ -124,25 +120,35 @@ def createInitSet(dataSet):
 
 initSet = createInitSet(simpDat)
 
+while True:
+    
+    tmp = input(("input min support or input 'exit' to leave)\n:"))
+    if tmp == 'exit':
+        break
+    else:
+        minsup = int(tmp)
+    
+        #The FP-tree
+        myFPtree, myHeaderTab = createTree(initSet,minsup)
+        #myFPtree.disp()
+        freqItems = []
+        mineTree(myFPtree, myHeaderTab, minsup, set([]), freqItems)
+        #myFPtree.disp()
+        #print('frequent pattern',freqItems)
+        inputset = set(input("input pattern:").split())
+        #inputset = {'1','4'}
+        getresult = []
+        if inputset in freqItems:
+            for line in simpDat:
+                for item in line:
+                    if item in inputset:
+                        getresult.append(simpDat.index(line)+1)
+        delduplicates = list(set(getresult))
+        finalresult = sorted(delduplicates,key=getresult.index)
+        
+        if getresult:
+            print("index in loadata", finalresult)
+        else:
+            print("None")
+        
 
-minsup = float(input("input min support:"))
-import math
-minsupratio = math.ceil(datalen*minsup)
-if minsupratio > 59:
-    print("out of range")
-#The FP-tree
-myFPtree, myHeaderTab = createTree(initSet,minsupratio)
-#myFPtree.disp()
-freqItems = []
-mineTree(myFPtree, myHeaderTab, minsupratio, set([]), freqItems)
-myFPtree.disp()
-#print('frequent pattern',freqItems)
-
-inputset = {'1','4'}
-getresult = []
-for line in simpDat:
-    for item in line:
-        if item in inputset:
-            getresult.append(simpDat.index(line)+1)
-delduplicates = list(set(getresult))
-finalresult = sorted(delduplicates,key=getresult.index)
