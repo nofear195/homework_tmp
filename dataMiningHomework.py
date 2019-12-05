@@ -3,24 +3,18 @@
 reference:
 https://blog.csdn.net/Gamer_gyt/article/details/51113753
 """
-# create tree node
+# construct tree node
 
 class treeNode:
     def __init__(self, nameValue, numOccur, parentNode):
         self.name = nameValue
         self.count = numOccur
         self.nodeLink = None
-        self.parent = parentNode      #needs to be updated
+        self.parent = parentNode
         self.children = {} 
-#increments the count variable with a given amount    
+    #increments the count variable with a given amount    
     def inc(self, numOccur):
         self.count += numOccur
-#display tree in text. Useful for debugging        
-    def disp(self, ind=1):
-        print ('  '*ind, self.name, ' ', self.count)
-        for child in self.children.values():
-            child.disp(ind+1)
-
             
 #create FP-tree from dataset
             
@@ -101,11 +95,11 @@ def mineTree(inTree, headerTable, minSup, preFix, freqItemList):
         myCondTree, myHead = createTree(condPattBases, minSup)
         
         if myHead != None:
-            #print('conditional tree for:',newFreqSet)
-            #myCondTree.disp()
             mineTree(myCondTree, myHead, minSup, newFreqSet, freqItemList)
 
-# load data
+
+# load dataset
+            
 simpDat = [] 
 with open("t2.txt","r") as loadata:
     for line in loadata:
@@ -120,23 +114,24 @@ def createInitSet(dataSet):
 
 initSet = createInitSet(simpDat)
 
+
+# run
+
 while True:
-    
+    # input minisup
     tmp = input(("input min support or input 'exit' to leave)\n:"))
     if tmp == 'exit':
         break
     else:
         minsup = int(tmp)
-    
-        #The FP-tree
         myFPtree, myHeaderTab = createTree(initSet,minsup)
-        #myFPtree.disp()
         freqItems = []
         mineTree(myFPtree, myHeaderTab, minsup, set([]), freqItems)
-        #myFPtree.disp()
-        #print('frequent pattern',freqItems)
+        
+        # input pattern
         inputset = set(input("input pattern:").split())
-        #inputset = {'1','4'}
+        
+        # search if pattern in freqItems and simpDat
         getresult = []
         if inputset in freqItems:
             for line in simpDat:
@@ -145,10 +140,7 @@ while True:
                         getresult.append(simpDat.index(line)+1)
         delduplicates = list(set(getresult))
         finalresult = sorted(delduplicates,key=getresult.index)
-        
         if getresult:
             print("index in loadata", finalresult)
         else:
             print("None")
-        
-
