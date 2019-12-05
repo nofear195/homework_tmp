@@ -130,7 +130,6 @@ while True:
         
         # input pattern
         inputset = set(input("input pattern:").split())
-        
         # search if pattern in freqItems and simpDat
         getresult = []
         if inputset in freqItems:
@@ -141,6 +140,6 @@ while True:
         delduplicates = list(set(getresult))
         finalresult = sorted(delduplicates,key=getresult.index)
         if getresult:
-            print("index in loadata", finalresult)
+            print("index form dataset", finalresult)
         else:
             print("None")
