@@ -125,12 +125,20 @@ while True:
     else:
         minsup = int(tmp)
         myFPtree, myHeaderTab = createTree(initSet,minsup)
+<<<<<<< HEAD:fp_tree_implement.py
         
         # input pattern
         inputset = set(map(str,input("input pattern:").split()))
         # mining frequency pattern
         freqItems = []
         mineTree(myFPtree, myHeaderTab, minsup, set([]), freqItems)
+=======
+        freqItems = []
+        mineTree(myFPtree, myHeaderTab, minsup, set([]), freqItems)
+        
+        # input pattern
+        inputset = set(input("input pattern:").split())
+>>>>>>> ee0b0882926a5eae3b94a1bc6dc877bb5920635a:fp_tree_implement.py
         # search if pattern in freqItems and simpDat
         getresult = []
         if inputset in freqItems:
@@ -141,6 +149,10 @@ while True:
         delduplicates = list(set(getresult))
         finalresult = sorted(delduplicates,key=getresult.index)
         if getresult:
+<<<<<<< HEAD:fp_tree_implement.py
             print("index from dataset", finalresult)
+=======
+            print("index form dataset", finalresult)
+>>>>>>> ee0b0882926a5eae3b94a1bc6dc877bb5920635a:fp_tree_implement.py
         else:
             print("None")
